@@ -32,12 +32,14 @@ class CitaController extends Controller
                 'regex:/^[0-9]{10}$/',
             ],
             'servicio' => 'required|max:100',
-            'fecha_cita' => 'required|date',
+            'fecha_cita' => 'required|date|after_or_equal:2025-01-01|before_or_equal:2050-12-31',
             'hora_cita' => 'required',
         ], [
             'nombre_clienta.regex' => 'El nombre no puede contener números.',
             'telefono.size' => 'El teléfono debe tener exactamente 10 números.',
             'telefono.regex' => 'El teléfono debe contener solo números (10 dígitos).',
+            'fecha_cita.after_or_equal' => 'La fecha de la cita debe ser del año 2025 en adelante.',
+            'fecha_cita.before_or_equal' => 'La fecha de la cita no puede ser posterior al año 2050.',
         ]);
 
         Cita::create($request->all());
@@ -46,8 +48,9 @@ class CitaController extends Controller
             ->with('success', 'Cita registrada.');
     }
 
-    public function show(Cita $cita)
+    public function show($id)
     {
+        $cita = Cita::withTrashed()->findOrFail($id);
         return view('citas.show', compact('cita'));
     }
 
@@ -70,13 +73,15 @@ class CitaController extends Controller
                 'regex:/^[0-9]{10}$/',
             ],
             'servicio' => 'required|max:100',
-            'fecha_cita' => 'required|date',
+            'fecha_cita' => 'required|date|after_or_equal:2025-01-01|before_or_equal:2050-12-31',
             'hora_cita' => 'required',
             'estado' => 'required',
         ], [
             'nombre_clienta.regex' => 'El nombre no puede contener números.',
             'telefono.size' => 'El teléfono debe tener exactamente 10 números.',
             'telefono.regex' => 'El teléfono debe contener solo números (10 dígitos).',
+            'fecha_cita.after_or_equal' => 'La fecha de la cita debe ser del año 2025 en adelante.',
+            'fecha_cita.before_or_equal' => 'La fecha de la cita no puede ser posterior al año 2050.',
         ]);
 
         $cita->update($request->all());
@@ -133,6 +138,12 @@ class CitaController extends Controller
         }
 
         return view('citas.buscar', compact('citas', 'query'));
+    }
+
+    public function eliminadas()
+    {
+        $citas = Cita::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
+        return view('citas.eliminadas', compact('citas'));
     }
 }
 
