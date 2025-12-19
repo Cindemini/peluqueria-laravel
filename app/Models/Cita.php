@@ -116,10 +116,11 @@ class Cita extends Model
     public function delete()
     {
         if (!isset($this->forceDeleting) || !$this->forceDeleting) {
-            $this->fecha_eliminacion = now();
+            $fechaEliminacion = now();
             $this->getConnection()->table($this->getTable())
                 ->where($this->getKeyName(), $this->getKey())
-                ->update(['fecha_eliminacion' => $this->fecha_eliminacion]);
+                ->update(['fecha_eliminacion' => $fechaEliminacion]);
+            $this->fecha_eliminacion = $fechaEliminacion;
         }
         
         return parent::delete();
