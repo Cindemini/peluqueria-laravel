@@ -15,7 +15,7 @@ class Cita extends Model
     
     protected $primaryKey = 'id_cita';
     
-    protected $dates = ['deleted_at', 'fecha_eliminacion'];
+    protected $dates = ['deleted_at'];
     
     protected $fillable = [
         'nombre_clienta',
@@ -23,8 +23,7 @@ class Cita extends Model
         'servicio',
         'fecha_cita',
         'hora_cita',
-        'estado',
-        'fecha_eliminacion'
+        'estado'
     ];
     
 
@@ -111,18 +110,5 @@ class Cita extends Model
                    ->orderBy('fecha_cita')
                    ->orderBy('hora_cita')
                    ->get();
-    }
-    
-    public function delete()
-    {
-        if (!isset($this->forceDeleting) || !$this->forceDeleting) {
-            $fechaEliminacion = now();
-            $this->getConnection()->table($this->getTable())
-                ->where($this->getKeyName(), $this->getKey())
-                ->update(['fecha_eliminacion' => $fechaEliminacion]);
-            $this->fecha_eliminacion = $fechaEliminacion;
-        }
-        
-        return parent::delete();
     }
 }
