@@ -8,6 +8,7 @@ Route::get('/', function () {
 });
 
 Route::resource('citas', CitaController::class)->except(['destroy']);
+Route::delete('citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');
 
 Route::get('/citas/hoy', [CitaController::class, 'citasHoy'])->name('citas.hoy');
 Route::get('/citas/historial', [CitaController::class, 'historial'])->name('citas.historial');
