@@ -1,0 +1,47 @@
+@extends('layouts.app')
+
+@section('titulo', 'Nueva Cita')
+
+@section('contenido')
+
+<h1>Registrar Cita</h1>
+
+<form action="{{ route('citas.store') }}" method="POST">
+    @csrf
+    
+    <div class="mb-3">
+        <label class="form-label">Nombre Clienta</label>
+        <input type="text" name="nombre_clienta" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Teléfono</label>
+        <input type="text" name="telefono" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Servicio</label>
+        <select name="servicio" class="form-select" required>
+            <option value="">Seleccione</option>
+            <option value="Corte">Corte</option>
+            <option value="Tinte">Tinte</option>
+            <option value="Peinado">Peinado</option>
+            <option value="Manicure">Manicure</option>
+            <option value="Tratamiento">Tratamiento</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha Cita</label>
+        <input type="date" name="fecha_cita" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hora Cita</label>
+        <input type="time" name="hora_cita" class="form-control" required>
+    </div>
+
+    <a href="{{ route('citas.index') }}" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
